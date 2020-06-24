@@ -1,19 +1,49 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 
-export default function App() {
+import RulesScreen from './screens/Rules.js';
+import StartScreen from './screens/Start';
+
+import { createStackNavigator } from '@react-navigation/stack';
+import styles from './styles';
+
+const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <>
+      <View style={styles.container}>
+        <Text>home page</Text>
+        <Text>Bienvenue voici le Jeu Juniper Green </Text>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Rules')}>
+          <Text style={styles.btnNav}>Les règles du jeu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Start')}>
+          <Text style={styles.btnNav}>Commencer une partie</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  )
+    ;
+}
+
+const Stack = createStackNavigator();
+
+const Nav = () => {
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Rules" component={RulesScreen} />
+        <Stack.Screen name="Start" component={StartScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => (
+  <SchoolProvider>
+    <Nav />
+  </SchoolProvider>
+);
+
+export default App;
