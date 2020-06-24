@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 
 import RulesScreen from './screens/Rules.js';
-import StartScreen from './screens/Start';
+import GameScreen from './screens/Game.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Rules')}>
           <Text style={styles.btnNav}>Les règles du jeu</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Start')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Game')}>
           <Text style={styles.btnNav}>Commencer une partie</Text>
         </TouchableOpacity>
       </View>
@@ -35,7 +35,7 @@ const Nav = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Rules" component={RulesScreen} />
-        <Stack.Screen name="Start" component={StartScreen} />
+        <Stack.Screen name="Game" component={GameScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
