@@ -1,35 +1,62 @@
-import React, { useContext } from 'react';
-import { Text, View, Button } from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, TouchableOpacity} from "react-native";
+import MyJuniperText from "../components/MyJuniperText";
+import styles from "../components/JuniperTextStyles";
+import Game from "../components/Game";
+import {endGame, initGame} from "../actions/actions-types";
+import {useDispatch, useSelector} from "react-redux";
+import Choices from "../components/Choices";
+import Colors from "../../Colors";
 
 
 const GameScreen = ({ navigation }) => {
 
-    //const [state, dispatch ] = useContext(SchoolContext);
+    const dispatch = useDispatch();
+
+    const { gameOver, iATurn, iAChoices, userTUrn, userChoices, startGameDate } = useSelector (state => state.juniper);
+
+    useEffect( () => {
+      //si fin de partie
+      if (GameOver) {
+        dispatch(endGame({
+          winner : iATurn,
+          iAChoices : iAChoices,
+          userChoices : userChoices,
+          userTUrn : userTUrn,
+          startGameDate : startGameDate,
+          endGameDate : Date.now()
+        })), 
+        setTimeout( function () {
+          dispatch( initGame());
+          navigation.push('SCORE')
+        }, 2000 );
+      }
+    }, [gameOver]);
+
+    //define GamePage
 
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Game Juniper Green</Text>
-  
-        <Button title="Revenir sur la page principale" onPress={() => navigation.navigate('Home')} />
-        <Button title="Les règles du jeu" onPress={() => navigation.navigate('Rules')} />
-        <Button title="Reset" onPress={() => navigation.navigate('')} />
-        <Text>C'est à vous !</Text>
-        <Text>Computer : 97</Text>
-        <Text>Votre choix : [  ]</Text>
-        <Button title="Valider" onPress={() => navigation.navigate('')} />
+      <MyJuniperText>
+        <View style = {styles.topMenu}>
+          
+          <TouchableOpacity style= {styles.button} onPress = {() => navigation.navigate('Home')} >
+            <Text> Home </Text>
+          </TouchableOpacity>
 
-        <ul> Vos choix :
-          <p>22</p>
-          <p>2</p>
-          <p>1</p>
-        </ul>
-        <ul> Choix du computer :
-          <p>11</p>
-          <p>10</p>
-          <p>17</p>
-        </ul>
-      </View>
-    );
-  }
+          <TouchableOpacity style= {styles.button} onPress = {() => navigation.navigate('Rules')} >
+            <Text> Règles du jeu </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style= {[styles.button, {backgroundColor: Colors.danger }]} onPress = {() => dispatch(initGame())}>
+            <Text style= { {color: Colors.white }}> Reset </Text>
+          </TouchableOpacity>
+        </View>
 
-  export default GameScreen;
+        <Game/>
+        <Choices userChoices= {userChoices} iAChoices = { iAChoices} />
+
+      </MyJuniperText>
+    )
+};
+
+export default GameScreen;
