@@ -8,9 +8,6 @@ const HomeScreen = ({ navigation }) =>{
 
     return(
     <JuniperText>
-        <Text style={styles.title2}>
-                Bienvenue, voici le jeu
-            </Text>
             <Text style={styles.title1}>
                 Juniper Green
             </Text>

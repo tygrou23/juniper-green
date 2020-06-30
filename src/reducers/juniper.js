@@ -1,9 +1,9 @@
 import {
-    INITIALIZE_GAME,
-    RESET_ERROR,
-    SET_PLAYER_CHOICE,
-    SUBMIT_CHOICE,
-    SUBMIT_COMPUTER_CHOICE
+    SET_USER_CHOICE,
+    SUBMIT_USER_CHOICE,
+    SUBMIT_IA_CHOICE,
+    INIT_GAME,
+    ERROR
 } from "../constants/action";
 
 import _ from 'lodash';
@@ -38,11 +38,11 @@ export default (state = stateInit, action = {}) => {
 
     switch (action.type)
     {
-        case SET_PLAYER_CHOICE:
+        case SET_USER_CHOICE:
             return {...state, playerChoice: action.payload};
-        case RESET_ERROR:
+        case ERROR:
             return{...state, errorMessage: '',displayError: false};
-        case INITIALIZE_GAME:
+        case INIT_GAME:
             const initialValue = Math.floor(Math.random() * state.maxValue)+1;
             possibleValues = calculatePossibleValues([initialValue],initialValue, state.maxValue);
 
@@ -57,7 +57,7 @@ export default (state = stateInit, action = {}) => {
                 gameOver: false,
                 winner: '',
             };
-        case SUBMIT_CHOICE:
+        case SUBMIT_USER_CHOICE:
             //Vérifier valeur nombre entier >0 && <=100
             if(!(state.playerChoice>0 && state.playerChoice <=state.maxValue))
             {
@@ -95,7 +95,7 @@ export default (state = stateInit, action = {}) => {
             return {...state, playerChoices: playerChoices, computerTurn: true, gameOver: gameOver,
                         possibleValues: possibleValues};
 
-        case SUBMIT_COMPUTER_CHOICE:
+        case SUBMIT_IA_CHOICE:
             if (state.gameOver)
                 return state;
             computerChoice = computerStrategy(state.possibleValues, state.maxValue, state.playerChoices.concat(state.computerChoice));

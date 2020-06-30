@@ -2,14 +2,14 @@ import React, {useEffect} from 'react';
 import styles from "./JuniperTextStyles";
 import {useDispatch, useSelector, } from "react-redux";
 import {Text, TextInput, TouchableOpacity, View, ActivityIndicator} from "react-native";
-import {setPlayerChoice, submitChoice, hideMessage, initializeGame, computerPlays} from "../actions/actions-types";
+import {setUserChoice, submitUserChoice, hideMessage, initGame, IATurn} from "../actions/actions-types";
 import Colors from "../../Colors";
 
 const Game = () => {
     const dispatch = useDispatch();
     const {computerTurn,playerChoice,playerChoices,computerChoice,computerChoices,displayError, gameOver} = useSelector(state => state.juniper);
     //Démarrage du jeu
-    useEffect(()=>{dispatch(initializeGame())},[]);
+    useEffect(()=>{dispatch(initGame())},[]);
 
     //Détection de l'affichage du message d'erreur
     useEffect(()=>{
@@ -20,7 +20,7 @@ const Game = () => {
     //Lancement du tour de jeu du computer
     useEffect(()=>{
         if(computerTurn && !gameOver)
-            dispatch(computerPlays());
+            dispatch(IATurn());
     },[computerTurn]);
 
 
@@ -40,7 +40,7 @@ const Game = () => {
                 <TextInput
                     keyboardType = 'name-phone-pad'
                     value={computerTurn?'':playerChoice.toString()}
-                    onChangeText={value => dispatch(setPlayerChoice(value))}
+                    onChangeText={value => dispatch(setUserChoice(value))}
                     disabled = {computerTurn}
                     style = {styles.textInput}
                 />
@@ -48,7 +48,7 @@ const Game = () => {
             <TouchableOpacity
                 style={[styles.button, {backgroundColor: Colors.primary}]}
                 disabled = {computerTurn}
-                onPress={() => dispatch(submitChoice())}
+                onPress={() => dispatch(submitUserChoice())}
             >
                 <Text style={{color: Colors.white}}>Valider</Text>
             </TouchableOpacity>
