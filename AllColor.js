@@ -1,11 +1,11 @@
-const Colors = {
+const Color = {
     primary     : '#007bff',
     secondary   : '#cfd8dc',
-    danger      : '#dc3545',
     white       : '#ffffff',
     light       : '#f8f9fa',
-
+    danger      : '#FF0202',
+    green       : '#1BCE14',
 };
 
-export default Colors
+export default Color
 

@@ -1,13 +1,13 @@
-const calculatePossibleValues = (playedValues, currentValue, maxValue) =>{
+// define the possibility by * OR  / from currentValue
+const CalculValuesPossibility = (playedValues, currentValue, maxValue) =>{
 
-    //On calcule les multiples et les divisibles de currentValue, et on les mets dans un tableau
     // On cherche les multiples < maxValue
-    let possibleValues = [];
+    let ValuesPossibility = [];
     let result = 0;
     for (let i=2; result<=maxValue; i++){
         result = currentValue*i;
         if(!playedValues.includes(result)&&result<=maxValue)
-            possibleValues.push(result);
+        ValuesPossibility.push(result);
     }
 
     //On cherche les divisibles
@@ -17,22 +17,22 @@ const calculatePossibleValues = (playedValues, currentValue, maxValue) =>{
         {
             let factor = currentValue / i;
             if (!playedValues.includes(factor))
-                possibleValues.push(factor)
+            ValuesPossibility.push(factor)
         }
     }
-    return possibleValues;
+    return ValuesPossibility;
 };
 
 
 
-const computerStrategy = (possibleValues, maxValue, playedValues) => {
+const IAStrats = (ValuesPossibility, maxValue, playedValues) => {
     // On crée un nouveau tableau contenant pour chaque nombre qu'il est possible de jouer, le nombre de possibilités au tour d'après
-    let values = possibleValues.map(v => ({value: v, possibilities : calculatePossibleValues(playedValues.concat(v),v,maxValue)}));
+    let values = ValuesPossibility.map(v => ({value: v, possibilities : CalculValuesPossibility(playedValues.concat(v),v,maxValue)}));
         values.sort((a,b)=> a.possibilities.length - b.possibilities.length);
 
     //On retourne la valeur avec le moins de possibilités
     return values[0].value;
 };
 
-export {calculatePossibleValues, computerStrategy}
+export {CalculValuesPossibility, IAStrats}
 

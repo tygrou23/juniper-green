@@ -1,29 +1,28 @@
 import React from 'react';
 import {Text, TouchableOpacity} from "react-native";
-import JuniperText from "../components/JuniperText";
-import styles from "../components/JuniperTextStyles";
-import Colors from "../../Colors";
+import MyJuniperText from "../components/MyJuniperText";
+import Mystyles from "../components/MyJuniperTextStyles";
+import Color from "../../AllColor";
 
 const HomeScreen = ({ navigation }) =>{
 
     return(
-    <JuniperText>
-            <Text style={styles.title1}>
-                Juniper Green
+    <MyJuniperText>
+
+            <Text style= {Mystyles.title1}>
+            Bienvenue voici le Jeu Juniper Green
             </Text>
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Rules')}
-            >
+                style={Mystyles.button}
+                onPress={() => navigation.navigate('Rules')}>
                 <Text>Règles du jeu</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={[styles.button, {backgroundColor: Colors.primary}]}
-                onPress={() => navigation.navigate('Game')}
-            >
-                <Text style={{color: Colors.white}}>Commencer le jeu</Text>
+                style={[Mystyles.button, {backgroundColor: Color.green}]}
+                onPress={() => navigation.navigate('Game')}>
+                <Text style={{color: Color.white}}>Commencer une partie</Text>
             </TouchableOpacity>
-        </JuniperText>
+        </MyJuniperText>
     )
 
 };

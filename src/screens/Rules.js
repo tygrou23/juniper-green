@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TouchableOpacity} from "react-native";
-import JuniperText from "../components/JuniperText";
-import styles from "../components/JuniperTextStyles";
+import MyJuniperText from "../components/MyJuniperText";
+import Mystyles from "../components/MyJuniperTextStyles";
 import {useSelector} from "react-redux";
 
 
@@ -10,26 +10,29 @@ const RulesScreen = ({ navigation }) =>{
 
 
     return(
-        <JuniperText>
-            <Text style={styles.title1}>
-                Règles du jeu{'\n'}Juniper Green
+        <MyJuniperText>
+
+            <Text style={Mystyles.title1}>
+                Règles du jeu Juniper Green
             </Text>
+
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Home')}
+                style={Mystyles.button} onPress={() => navigation.navigate('Home')}
             >
-                <Text>Retour à l'accueil</Text>
+                <Text>Retour sur la page principale</Text>
             </TouchableOpacity>
-            <Text style={styles.paragraph}>Le jeu possède trois règles :</Text>
-            <Text style={styles.paragraph}>Le Joueur 1 choisit un nombre entre 1 et {maxValue}.{'\n'}
+            <Text style={Mystyles.paragr}>Le jeu possède trois règles :</Text>
+            <Text style={Mystyles.paragr}>Le Joueur 1 choisit un nombre entre 1 et {maxValue}.{'\n'}
+
                 À tour de rôle, chaque joueur doit choisir un nombre parmi
                 les multiples ou les diviseurs du nombre choisi précédemment
                 par son adversaire et inférieur à {maxValue}.
             </Text>
-            <Text style={styles.paragraph}>Un nombre ne peut être joué qu'une seule fois.</Text>
-            <Text style={styles.paragraph}>Le perdant étant le joueur qui ne trouve plus de multiples
-                ou de diviseurs communs au nombre précédemment choisi.</Text>
-        </JuniperText>
+            <Text style={Mystyles.paragr}>Un nombre ne peut être joué qu'une seule fois. {'\n'} 
+                Le perdant étant le joueur qui ne trouve plus de multiples
+                ou de diviseurs communs au nombre précédemment choisi
+            </Text>
+        </MyJuniperText>
     )
 
 };

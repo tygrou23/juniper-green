@@ -9,7 +9,7 @@ import HomeScreen from "./src/screens/Home";
 import RulesScreen from "./src/screens/Rules";
 import GameScreen from "./src/screens/Game";
 import ScoreScreen from "./src/screens/Scores";
-import Colors from "./Colors";
+import Color from "./AllColor";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 
 const store = createStore(reducer, applyMiddleware(thunk));
@@ -25,7 +25,7 @@ const Nav = () => {
                 screenOptions={
                     {
                     headerStyle: {
-                            backgroundColor: Colors.light,
+                            backgroundColor: Color.light,
                         }
                     }
                 }

@@ -1,22 +1,26 @@
+//import react, reactnative, and redux
 import React from 'react';
-import styles from "./JuniperTextStyles";
 import {Text, View} from "react-native";
 import {useSelector} from "react-redux";
-import Colors from "../../Colors";
 
+//other import script
+import Color from "../../AllColor";
+import Mystyles from "./MyJuniperTextStyles";
 
-const AlertMessage = () => {
+const Alertmessage = () => {
 
-    const {displayError, errorMessage} = useSelector(state => state.juniper);
+    const {errorDisplay, errorMessage} = useSelector (state => state.juniper);
 
-    if (displayError)
+    //if there is an error we print a view containing an alertbox message
+    if (errorDisplay)
         return(
-                <View style={styles.alertBox}>
-                    <Text style={{flex: 1, color:Colors.white,fontWeight: 'bold', alignSelf:'center'}}>{errorMessage}</Text>
+                <View style={Mystyles.alertMessageBox}>
+                    <Text style={{flex: 1, color:Color.white,fontWeight: 'bold', alignSelf:'center'}}>{errorMessage}</Text>
                 </View>
         );
+    //if there is no errordisplay we continue the game
     else
         return (<></>)
 };
 
-export default AlertMessage
+export default Alertmessage;

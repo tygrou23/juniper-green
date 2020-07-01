@@ -1,62 +1,60 @@
+//import from react, react-redux, and react-native
 import React, {useEffect} from 'react';
-import styles from "./JuniperTextStyles";
 import {useDispatch, useSelector, } from "react-redux";
 import {Text, TextInput, TouchableOpacity, View, ActivityIndicator} from "react-native";
-import {setUserChoice, submitUserChoice, hideMessage, initGame, IATurn} from "../actions/actions-types";
-import Colors from "../../Colors";
+
+//other import from scripts
+import {setUserChoice, submitUserChoice, IAPlays, messageStatus, initGame } from "../actions/actions-types";
+import Mystyles from "./MyJuniperTextStyles";
+import Color from "../../AllColor";
 
 const Game = () => {
+
     const dispatch = useDispatch();
-    const {computerTurn,playerChoice,playerChoices,computerChoice,computerChoices,displayError, gameOver} = useSelector(state => state.juniper);
-    //Démarrage du jeu
+    const {userChoice, userChoices, IAturn, IAChoice, IAChoices, gameOver, errorDisplay} = useSelector(state => state.juniper);
+
+    //init the game
     useEffect(()=>{dispatch(initGame())},[]);
 
-    //Détection de l'affichage du message d'erreur
+    //if we got errorDisplay -> define
     useEffect(()=>{
-        if(displayError)
-            dispatch(hideMessage());
-    },[displayError]);
+        if(errorDisplay)
+            dispatch(messageStatus());
+    },
+    [errorDisplay]);
 
-    //Lancement du tour de jeu du computer
+    //start the IAturn
     useEffect(()=>{
-        if(computerTurn && !gameOver)
-            dispatch(IATurn());
-    },[computerTurn]);
-
-
+        if(IAturn && ! gameOver)
+            dispatch(IAPlays());
+    },
+    [IAturn]);
 
     return(
         <View>
-            {gameOver && <Text style={styles.title2}>Plus de choix possible</Text>}
-            {!gameOver && computerTurn && <View style={{flexDirection:'row', justifyContent:'space-evenly'}}><Text style={styles.title2}>Computer réfléchit...</Text><ActivityIndicator color={Colors.primary} /></View>}
-            {!gameOver && !computerTurn && <Text style={styles.title2}>C'est à vous !</Text>}
+            {gameOver && <Text style={Mystyles.title2}>Vous n'avez plus de choix possible</Text>}
+            {!gameOver && IAturn && <View style={{flexDirection:'row', justifyContent:'space-evenly'}}><Text style={Mystyles.title2}>L'IA réfléchit ...</Text><ActivityIndicator color={Color.primary} /></View>}
+            {!gameOver && !IAturn && <Text style={Mystyles.title2}>A toi de jouer !</Text>}
 
-            <Text style={styles.title2}>
-                {computerChoices.length === 1 && playerChoices.length === 0? `Début du jeu: ${computerChoice}` :
-                    !computerTurn? `Computer : ${computerChoice}`: `Vous avez choisi ${playerChoice}` }
+            <Text style={Mystyles.title2}>
+                {IAChoices.length === 1 && userChoices.length === 0? `Premier chiffre: ${IAChoice}` :
+                    !IAturn? `Computer : ${IAChoice}`: `Votre chiffre ${userChoice}` }
             </Text>
+
             <View style={[{flexDirection:"row"},{alignItems: "center"},{justifyContent: 'center',}]}>
                 <Text>Votre choix:</Text>
-                <TextInput
-                    keyboardType = 'name-phone-pad'
-                    value={computerTurn?'':playerChoice.toString()}
+                <TextInput keyboardType = 'name-phone-pad' value={IAturn?'':userChoice.toString()}
                     onChangeText={value => dispatch(setUserChoice(value))}
-                    disabled = {computerTurn}
-                    style = {styles.textInput}
-                />
+                    disabled = {IAturn} style = {Mystyles.InputText}/>
             </View>
+
             <TouchableOpacity
-                style={[styles.button, {backgroundColor: Colors.primary}]}
-                disabled = {computerTurn}
-                onPress={() => dispatch(submitUserChoice())}
-            >
-                <Text style={{color: Colors.white}}>Valider</Text>
+                style={[Mystyles.button, {backgroundColor: Color.green}]} disabled = {IAturn}
+                onPress={() => dispatch(submitUserChoice())}>
+            <Text style={{color: Color.white}}>Valider </Text>
             </TouchableOpacity>
 
         </View>
-    )
+    )};
 
-
-};
-
-export default Game
+export default Game;
