@@ -10,7 +10,6 @@ const Mystyles = StyleSheet.create({
     },
 
     paragr: {
-        marginTop: '30px',
         fontSize: 20,
         textAlign: 'left',
         margin: 10,

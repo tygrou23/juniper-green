@@ -33,7 +33,7 @@ const RulesScreen = ({ navigation }) =>{
             </Text>
             <Text style={Mystyles.paragr}>Un nombre ne peut être joué qu'une seule fois. {'\n'} 
                 Le perdant étant le joueur qui ne trouve plus de multiples
-                ou de diviseurs communs au nombre précédemment choisi
+                ou de diviseurs communs au nombre précédemment choisi.
             </Text>
         </MyJuniperText>
     )};
