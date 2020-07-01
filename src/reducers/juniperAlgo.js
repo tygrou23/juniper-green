@@ -10,111 +10,133 @@ import {CalculValuesPossibility, IAStrats} from "../utils/utils";
 
 const initialState = {
 
-    maxValue : 100,
+    //define the nb max of value
+    valueMax : 100,
 
+    //IA
     IAChoice : '',
     IAChoices : [],
     IAturn : false,
 
+    //user
     userChoice: '',
     userChoices : [],
 
+    //other 
     ValuesPossibility : [],
     errorDisplay : false,
     errorMessage : '',
     gameOver: false,
+    dateStartGame : null,
     winner: '',
-    startGameDate : null,
 };
-
 const stateInit = _.cloneDeep(initialState);
 
 export default (state = stateInit, action = {}) => {
-
-    //define let for user
+    //user
     let userChoices;
 
-    //define let for IA
+    // IA
     let IAChoice;
     let IAChoices;
 
-    //define ValuesPossibility
+    //ValuesPossibility + ValuesPlayed
     let ValuesPossibility;
-    //define ValuesPlayed
-    let playedValues;
+    let ValuesPlayed;
 
     //define gameOver
     let gameOver;
 
+    //switch action
     switch (action.type)
     {
         case SET_USER_CHOICE:
+            //set the user choice
             return {...state, userChoice: action.payload};
         case ERROR:
-            return{...state, errorMessage: '',errorDisplay: false};
-        case INIT_GAME:
-            const initialValue = Math.floor(Math.random() * state.maxValue)+1;
-            ValuesPossibility = CalculValuesPossibility([initialValue],initialValue, state.maxValue);
+            //define the errormessage and display
+            return{...state, errorMessage: '', errorDisplay: false};
+        case INIT_GAME: 
+            //INIT the game and define random valueinit 
+            const valueInit = Math.floor(Math.random() * state.valueMax)+1;
+            //value possibility call the calcul for define all the valuespossibility
+            ValuesPossibility = CalculValuesPossibility([valueInit], valueInit, state.valueMax);
 
             return {...state,
+
                 IAturn: false,
-                IAChoices : [initialValue],
+                IAChoices : [valueInit],
+                IAChoice: valueInit,
+
                 userChoices : [],
-                IAChoice: initialValue,
-                ValuesPossibility: ValuesPossibility,
-                startGameDate: Date.now(),
                 userChoice: '',
+
+                ValuesPossibility: ValuesPossibility,
                 gameOver: false,
                 winner: '',
+                dateStartGame: Date.now(),
             };
+        
         case SUBMIT_USER_CHOICE:
-            //Vérifier valeur nombre entier >0 && <=100
-            if(!(state.userChoice>0 && state.userChoice <=state.maxValue))
+            
+            //check if userchoice is between >0 && <  valuemax (100)
+            if(!(state.userChoice>0 && state.userChoice <=state.valueMax))
             {
                 return {...state,
-                    errorMessage: `Le nombre doit être compris entre 1 et ${state.maxValue}`,
+                    errorMessage: `Attention ! Le nombre doit obligatoirement être compris entre 1 et ${state.valueMax}`,
                     errorDisplay: true
                 };
             }
-            //Vérifier que le nombre n'ait pas déjà été saisi
+            //check if the userchoice doesnt already got choose
             if(state.userChoices.includes(parseInt(state.userChoice))
                 || state.IAChoices.includes(parseInt(state.userChoice))
                 )
             {
                 return {...state,
-                    errorMessage: 'Nombre déjà joué',
+                    errorMessage: 'Attention, le nombre choit à déja été joué !',
                     errorDisplay: true
                 };
             }
-            //TODO vérifier valeur correcte (incluse dans ValuesPossibility
+            // check ValuesPossibility include from userchoihce
             if(!state.ValuesPossibility.includes(parseInt(state.userChoice))){
                 return {...state,
-                    errorMessage: `Le nombre doit être un multiple ou un divisible de ${state.IAChoice}`,
+                    errorMessage: `Votre nombre doit être soit un multiple ou un divisible de ${state.IAChoice}`,
                     errorDisplay: true
                 };
             }
-            //TODO Ajouter la valeur au tableau playersChoice + chercher les nouvelles valeurs possibles
-            userChoices = [...state.userChoices, parseInt(state.userChoice)];
-            playedValues = userChoices.concat(state.IAChoices);
-            ValuesPossibility = CalculValuesPossibility(playedValues,state.userChoice, state.maxValue);
-            //Si plus de valeurs possibles, le jeu est terminé
-            gameOver = ValuesPossibility.length === 0;
-            //Si plus de valeurs possibles, partie gagnée
-            ValuesPossibility.length === 0 ? gameOver = true : gameOver = false;
+        
+            //insert userChoice value into tab userChoices
+            
+            userChoices=[...state.userChoices, parseInt(state.userChoice)];
 
-            return {...state, userChoices: userChoices, IAturn: true, gameOver: gameOver,
-                ValuesPossibility: ValuesPossibility};
+            //set the valuesplayed
+            ValuesPlayed=userChoices.concat(state.IAChoices);
+            //set the valuespossibility
+            ValuesPossibility=CalculValuesPossibility(ValuesPlayed,state.userChoice, state.valueMax);
+          
+            //when no ValuesPossibility => gameOver
+            gameOver=ValuesPossibility.length === 0;
+            
+            //if no valuespossibility => win / else => lost
+            ValuesPossibility.length === 0 ? gameOver=true : gameOver=false;
+
+            return {...state, userChoices: userChoices, IAturn: true, gameOver: gameOver,ValuesPossibility: ValuesPossibility};
 
         case SUBMIT_IA_CHOICE:
             if (state.gameOver)
                 return state;
-                IAChoice = IAStrats(state.ValuesPossibility, state.maxValue, state.userChoices.concat(state.IAChoice));
-            IAChoices = state.IAChoices.concat(IAChoice);
-            playedValues = IAChoices.concat(state.userChoices);
-            ValuesPossibility = CalculValuesPossibility(playedValues,IAChoice, state.maxValue);
 
-            //Si plus de valeurs possibles, partie gagnée
+            //set IA choice
+            IAChoice = IAStrats(state.ValuesPossibility, state.valueMax, state.userChoices.concat(state.IAChoice));
+            IAChoices = state.IAChoices.concat(IAChoice);
+
+            //set and update valuesplayed and valuespossibility
+            ValuesPlayed = IAChoices.concat(state.userChoices);
+            ValuesPossibility = CalculValuesPossibility(ValuesPlayed,IAChoice, state.valueMax);
+
+            //if no valuespossibility left => IA win 
             gameOver = ValuesPossibility.length === 0;
+
             return {...state, IAChoice:IAChoice, IAChoices: IAChoices, userChoice: '',
             ValuesPossibility: ValuesPossibility, IAturn: false, gameOver: gameOver};
 

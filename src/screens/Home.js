@@ -1,5 +1,8 @@
+//import react and react-native
 import React from 'react';
 import {Text, TouchableOpacity} from "react-native";
+
+//other import from scripts
 import MyJuniperText from "../components/MyJuniperText";
 import Mystyles from "../components/MyJuniperTextStyles";
 import Color from "../../AllColor";
@@ -23,7 +26,6 @@ const HomeScreen = ({ navigation }) =>{
                 <Text style={{color: Color.white}}>Commencer une partie</Text>
             </TouchableOpacity>
         </MyJuniperText>
-    )
+    )};
 
-};
-export default HomeScreen
+export default HomeScreen;

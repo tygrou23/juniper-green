@@ -15,21 +15,23 @@ import {endGame, initGame} from "../actions/actions-types";
 import AllChoices from "../components/AllChoices";
 import Color from "../../AllColor";
 
+//const GameScreen
 const GameScreen = ({ navigation }) =>{
+
     const dispatch = useDispatch();
-    const {gameOver, IAturn,IAChoices,userChoices, startGameDate} = useSelector(state => state.juniper);
+    const {IAturn,IAChoices,userChoices, gameOver, dateStartGame} = useSelector(state => state.juniper);
 
 
-    //Redirection vers la page score en fin de partie
+    //redirect into scorepage when endGame
     useEffect(()=>{
         if(gameOver){
             dispatch(endGame({
                 won: IAturn,
                 IAChoices: IAChoices,
                 userChoices: userChoices,
-                startGameDate : startGameDate,
-                endGameDate : Date.now()
-            }));
+                dateStartGame : dateStartGame,
+                endGameDate : Date.now()}));
+            //define time before we nativate to score screen
             setTimeout(function () {
                 dispatch(initGame());
                 navigation.push('Score')
@@ -63,7 +65,6 @@ const GameScreen = ({ navigation }) =>{
             <Game/>
             <AllChoices userChoices={userChoices} IAChoices={IAChoices}/>
         </MyJuniperText>
-    )
-};
+    )};
 
-export default GameScreen
+export default GameScreen;

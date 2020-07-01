@@ -36,7 +36,9 @@ const Mystyles = StyleSheet.create({
         borderRadius: 3,
         padding: 10,
         alignItems: "center",
-        margin: 10,
+        margin: 20,
+        maxHeight: 60
+        
     },
 
     MenuTop: {

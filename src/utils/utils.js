@@ -1,36 +1,46 @@
 // define the possibility by * OR  / from currentValue
-const CalculValuesPossibility = (playedValues, currentValue, maxValue) =>{
+const CalculValuesPossibility = (ValuesPlayed, currentValue, valueMax) =>{
 
-    // On cherche les multiples < maxValue
-    let ValuesPossibility = [];
+   //try to define the multiple of the currentValue
+
     let result = 0;
-    for (let i=2; result<=maxValue; i++){
+    let ValuesPossibility = [];
+    
+
+    for ( let i = 2 ; result <= valueMax; i++ ){
+
+        //multiple the current value from 2 TO <= valuemax (100)
         result = currentValue*i;
-        if(!playedValues.includes(result)&&result<=maxValue)
+        
+        if(!ValuesPlayed.includes(result)&&result<=valueMax)
+        //we push result into the valuepossibility tab
         ValuesPossibility.push(result);
     }
 
-    //On cherche les divisibles
-    for (let i= 1; i <= currentValue; i++)
+    //try to define the divisible from current value
+    for (let i= 1; i <= currentValue; i++ )
     {
-        if (currentValue %i ===0)
+        if ( currentValue %i ===0)
         {
+            //define the factor and set the value of the current value / i
             let factor = currentValue / i;
-            if (!playedValues.includes(factor))
+            //if valueplayed doesnt inclued the factor
+            if (!ValuesPlayed.includes(factor))
+            //we push factor value into the valueplayed tab
             ValuesPossibility.push(factor)
         }
     }
     return ValuesPossibility;
 };
 
-
-
-const IAStrats = (ValuesPossibility, maxValue, playedValues) => {
-    // On crée un nouveau tableau contenant pour chaque nombre qu'il est possible de jouer, le nombre de possibilités au tour d'après
-    let values = ValuesPossibility.map(v => ({value: v, possibilities : CalculValuesPossibility(playedValues.concat(v),v,maxValue)}));
-        values.sort((a,b)=> a.possibilities.length - b.possibilities.length);
-
-    //On retourne la valeur avec le moins de possibilités
+//const IAStrats
+const IAStrats = (ValuesPossibility, valueMax, ValuesPlayed) => {
+    
+    //create a new tab containing each nb we can play and possibility 
+    
+    let values = ValuesPossibility.map(v => ({value: v, possibilities : CalculValuesPossibility(ValuesPlayed.concat( v ), v, valueMax)}));
+    values.sort((a,b)=> a.possibilities.length - b.possibilities.length);
+    //return the value with less possibility
     return values[0].value;
 };
 
